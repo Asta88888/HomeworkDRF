@@ -4,7 +4,7 @@ from rest_framework import viewsets, filters
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView
 from users.models import Payment, User
 from users.serializer import PaymentSerializer, UserSerializer
-
+from rest_framework.permissions import AllowAny
 
 class UserProfileView(DetailView):
     pass
@@ -12,7 +12,7 @@ class UserProfileView(DetailView):
 
 class UserCreateAPIView(CreateAPIView):
     serializer_class = UserSerializer
-    queryset = User.objects.all()
+    queryset = User.objects.all(AllowAny,)
 
     def perform_create(self, serializer):
         user = serializer.save(is_active=True)
