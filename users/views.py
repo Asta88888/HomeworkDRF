@@ -12,7 +12,8 @@ class UserProfileView(DetailView):
 
 class UserCreateAPIView(CreateAPIView):
     serializer_class = UserSerializer
-    queryset = User.objects.all(AllowAny,)
+    queryset = User.objects.all()
+    permission_classes = (AllowAny,)
 
     def perform_create(self, serializer):
         user = serializer.save(is_active=True)
