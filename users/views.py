@@ -3,11 +3,14 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, filters
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView
 from users.models import Payment, User
+from users.permissions import IsOwner
 from users.serializer import PaymentSerializer, UserSerializer
 from rest_framework.permissions import AllowAny
 
 class UserProfileView(DetailView):
-    pass
+    serializer_class = UserSerializer
+    queryset = User.objects.all()
+    permission_classes = [IsOwner]
 
 
 class UserCreateAPIView(CreateAPIView):
@@ -29,6 +32,7 @@ class UserListAPIView(ListAPIView):
 class UserRetrieveAPIView(RetrieveAPIView):
     serializer_class = UserSerializer
     queryset = User.objects.all()
+    permission_classes = [IsOwner]
 
 
 class UserUpdateAPIView(UpdateAPIView):
