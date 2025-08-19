@@ -32,17 +32,19 @@ class UserListAPIView(ListAPIView):
 class UserRetrieveAPIView(RetrieveAPIView):
     serializer_class = UserSerializer
     queryset = User.objects.all()
-    permission_classes = [IsOwner]
+
 
 
 class UserUpdateAPIView(UpdateAPIView):
     serializer_class = UserSerializer
     queryset = User.objects.all()
+    permission_classes = [IsOwner]
 
 
 class UserDestroyAPIView(DestroyAPIView):
     serializer_class = UserSerializer
     queryset = User.objects.all()
+    permission_classes = [IsOwner]
 
 
 class PaymentViewSet(viewsets.ModelViewSet):
