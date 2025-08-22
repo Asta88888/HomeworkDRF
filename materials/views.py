@@ -51,7 +51,7 @@ class LessonCreateAPIView(CreateAPIView):
 class LessonListAPIView(ListAPIView):
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
-    permission_classes = [IsAuthenticated, IsModerator]
+    permission_classes = [IsAuthenticated | IsModerator]
     pagination_class = StandardResultSetPagination
 
 
@@ -70,7 +70,7 @@ class LessonUpdateAPIView(UpdateAPIView):
 class LessonDestroyAPIView(DestroyAPIView):
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
-    permission_classes = [IsAuthenticated, IsModerator | ~IsModerator]
+    permission_classes = [IsAuthenticated, IsOwner | ~IsModerator]
 
 
 class SubscriptionToggleView(APIView):
