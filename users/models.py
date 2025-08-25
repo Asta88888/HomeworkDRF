@@ -32,7 +32,7 @@ class Payment(models.Model):
     ]
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='payments', verbose_name='Пользователь')
-    payment_date = models.DateField(verbose_name='Дата оплаты')
+    payment_date = models.DateField(auto_now_add=True, verbose_name='Дата оплаты')
     paid_course = models.ForeignKey(Course, on_delete=models.SET_NULL, blank=True, null=True, related_name='payments', verbose_name='Оплаченный курс')
     paid_lesson = models.ForeignKey(Lesson, on_delete=models.SET_NULL, blank=True, null=True, related_name='payments', verbose_name='Оплаченный урок')
     payment_amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Сумма оплаты")
