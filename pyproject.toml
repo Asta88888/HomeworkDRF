@@ -15,6 +15,9 @@ djangorestframework = "^3.16.1"
 django-filter = "^25.1"
 djangorestframework-simplejwt = "^5.5.1"
 coverage = "^7.10.4"
+drf-yasg = "^1.21.10"
+stripe = "^12.4.0"
+forex-python = "^1.9.2"
 
 
 [tool.poetry.group.lint.dependencies]
