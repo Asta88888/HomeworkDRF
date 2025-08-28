@@ -6,6 +6,8 @@ class Course(models.Model):
     preview = models.ImageField(upload_to='courses/preview', blank=True, null=True, verbose_name='Превью')
     description = models.TextField(verbose_name='Описание курса')
     owner = models.ForeignKey("users.User", on_delete=models.SET_NULL, verbose_name='Создатель курса', blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    last_notification_sent = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -24,6 +26,8 @@ class Lesson(models.Model):
     url = models.URLField(max_length=300, verbose_name='Ссылка на видео')
     course = models.ForeignKey(Course, related_name='lessons', on_delete=models.CASCADE)
     owner = models.ForeignKey("users.User", on_delete=models.SET_NULL, verbose_name='Создатель урока', blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    last_notification_sent = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return f'Урок: {self.name} (Курс: {self.course.name})'
