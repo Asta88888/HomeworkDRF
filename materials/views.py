@@ -1,4 +1,3 @@
-from django.template.context_processors import request
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -8,6 +7,9 @@ from materials.pagination import StandardResultSetPagination
 from materials.serializer import CourseSerializer, LessonSerializer, CourseDetailSerializer
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView, \
     get_object_or_404
+from datetime import timedelta
+from django.utils import timezone
+from materials.tasks import send_update_notification
 from users.permissions import IsModerator, IsOwner
 
 
@@ -25,6 +27,14 @@ class CourseViewSet(ModelViewSet):
         course = serializer.save()
         course.owner = self.request.user
         course.save()
+
+    def perform_update(self, serializer):
+        course = serializer.save()
+
+        if not course.last_notification_sent or (timezone.now() - course.last_notification_sent) > timedelta(hours=4):
+            send_update_notification.delay(course.id)
+            course.last_notification_sent = timezone.now()
+            course.save(update_fields=['last_notification_sent'])
 
 
     def get_permissions(self):
@@ -66,6 +76,14 @@ class LessonUpdateAPIView(UpdateAPIView):
     serializer_class = LessonSerializer
     permission_classes = [IsAuthenticated, IsModerator | IsOwner]
 
+    def perform_update(self, serializer):
+        lesson = serializer.save()
+        course = lesson.course
+
+        if not course.last_notification_sent or (timezone.now() - course.last_notification_sent) > timedelta(hours=4):
+            send_update_notification.delay(course.id)
+            course.last_notification_sent = timezone.now()
+            course.save(update_fields=['last_notification_sent'])
 
 class LessonDestroyAPIView(DestroyAPIView):
     queryset = Lesson.objects.all()
