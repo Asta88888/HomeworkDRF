@@ -5,7 +5,6 @@ class UrlValidator:
     def __init__(self, field):
         self.field = field
 
-
     def __call__(self, attrs):
         url = attrs.get(self.field)
         if url and "youtube.com" not in url:

@@ -5,8 +5,14 @@ from rest_framework.viewsets import ModelViewSet
 from materials.models import Course, Lesson, Subscription
 from materials.pagination import StandardResultSetPagination
 from materials.serializer import CourseSerializer, LessonSerializer, CourseDetailSerializer
-from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView, \
-    get_object_or_404
+from rest_framework.generics import (
+    CreateAPIView,
+    ListAPIView,
+    RetrieveAPIView,
+    UpdateAPIView,
+    DestroyAPIView,
+    get_object_or_404,
+)
 from datetime import timedelta
 from django.utils import timezone
 from materials.tasks import send_update_notification
@@ -22,7 +28,6 @@ class CourseViewSet(ModelViewSet):
             return CourseDetailSerializer
         return CourseSerializer
 
-
     def perform_create(self, serializer):
         course = serializer.save()
         course.owner = self.request.user
@@ -34,8 +39,7 @@ class CourseViewSet(ModelViewSet):
         if not course.last_notification_sent or (timezone.now() - course.last_notification_sent) > timedelta(hours=4):
             send_update_notification.delay(course.id)
             course.last_notification_sent = timezone.now()
-            course.save(update_fields=['last_notification_sent'])
-
+            course.save(update_fields=["last_notification_sent"])
 
     def get_permissions(self):
         if self.action == "create":
@@ -83,7 +87,8 @@ class LessonUpdateAPIView(UpdateAPIView):
         if not course.last_notification_sent or (timezone.now() - course.last_notification_sent) > timedelta(hours=4):
             send_update_notification.delay(course.id)
             course.last_notification_sent = timezone.now()
-            course.save(update_fields=['last_notification_sent'])
+            course.save(update_fields=["last_notification_sent"])
+
 
 class LessonDestroyAPIView(DestroyAPIView):
     queryset = Lesson.objects.all()
@@ -96,14 +101,14 @@ class SubscriptionToggleView(APIView):
 
     def post(self, *args, **kwargs):
         user = self.request.user
-        course_id = self.request.data.get('course_id')
+        course_id = self.request.data.get("course_id")
         course_item = get_object_or_404(Course, id=course_id)
         subs_item = Subscription.objects.filter(user=user, course=course_item)
 
         if subs_item.exists():
             subs_item.delete()
-            message = 'Подписка удалена'
+            message = "Подписка удалена"
         else:
             Subscription.objects.create(user=user, course=course_item)
-            message = 'Подписка добавлена'
-        return Response({'message': message})
+            message = "Подписка добавлена"
+        return Response({"message": message})
