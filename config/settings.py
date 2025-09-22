@@ -14,7 +14,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -151,3 +151,12 @@ CELERY_BEAT_SCHEDULE = {
         "schedule": crontab(hour=0, minute=0),
     },
 }
+
+CACHE_ENABLED = True
+if CACHE_ENABLED:
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+            'LOCATION': 'redis://redis:6379/0',
+        }
+    }
