@@ -3,6 +3,7 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 from users.models import User
 from materials.models import Subscription, Lesson, Course
+from unittest.mock import ANY
 
 
 class LessonTestCase(APITestCase):
@@ -59,6 +60,8 @@ class LessonTestCase(APITestCase):
                     "preview": None,
                     "url": self.lesson.url,
                     "owner": self.lesson.owner.id,
+                    "last_notification_sent": None,
+                    "updated_at": ANY,
                 }
             ],
         }
@@ -134,6 +137,8 @@ class CourseTestCase(APITestCase):
                     "preview": None,
                     "description": self.course.description,
                     "owner": self.course.owner.pk,
+                    "last_notification_sent": None,
+                    "updated_at": ANY,
                 }
             ],
         }
