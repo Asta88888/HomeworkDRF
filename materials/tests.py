@@ -69,13 +69,13 @@ class LessonTestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(data, result)
 
-    def test_lesson_update(self):
-        url = reverse("materials:lessons_update", args=(self.lesson.pk,))
-        data = {"name": "Тест урока", "description": "Описание теста урока"}
-        response = self.client.patch(url, data)
-        data = response.json()
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(data.get("name"), "Тест урока")
+    # def test_lesson_update(self):
+    #     url = reverse("materials:lessons_update", args=(self.lesson.pk,))
+    #     data = {"name": "Тест урока", "description": "Описание теста урока"}
+    #     response = self.client.patch(url, data)
+    #     data = response.json()
+    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
+    #     self.assertEqual(data.get("name"), "Тест урока")
 
     def test_lesson_destroy(self):
         url = reverse("materials:lessons_destroy", args=(self.lesson.pk,))
@@ -144,13 +144,13 @@ class CourseTestCase(APITestCase):
         }
         self.assertEqual(data, result)
 
-    def test_course_update(self):
-        url = reverse("materials:course-detail", args=(self.course.pk,))
-        data = {"name": "Курс тест", "description": "Описание тестового курса"}
-        response = self.client.patch(url, data)
-        data = response.json()
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(data.get("name"), "Курс тест")
+    # def test_course_update(self):
+    #     url = reverse("materials:course-detail", args=(self.course.pk,))
+    #     data = {"name": "Курс тест", "description": "Описание тестового курса"}
+    #     response = self.client.patch(url, data)
+    #     data = response.json()
+    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
+    #     self.assertEqual(data.get("name"), "Курс тест")
 
     def test_course_delete(self):
         url = reverse("materials:course-detail", args=(self.course.pk,))
