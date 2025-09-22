@@ -46,3 +46,29 @@ docker-compose run --rm backend celery -A core beat -l info
 
 7. Остановка проекта
 * docker-compose down
+
+
+*Инструкции по настройке удаленного сервера и деплоя.*
+1) Создаем виртуальную машину в Yandex Cloud или в Google Cloud или на других ресурсах.
+2) Копируем IP виртуальной машины 
+3) Вставляем IP виртуальной машины и вносим в Secrets в GitHub, туда же вносим SSH ключ и ключи DOCKER_HUB_USERNAME, DOCKER_HUB_ACCESS_TOKEN
+4) Соединяем виртуальную машину с компьютером, и после успешного соединения подтягиваем докер командами: 
+* sudo apt-get update
+* sudo apt-get install ca-certificates curl
+* sudo install -m 0755 -d /etc/apt/keyrings
+* sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+* sudo chmod a+r /etc/apt/keyrings/docker.asc
+* echo \
+   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+   $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" | \
+   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+* sudo apt-get update
+5) Далее добавляем файрвол(если не активирован) командами:
+* sudo ufw status
+* sudo ufw enable
+* sudo ufw allow 80/tcp
+* sudo ufw allow 443/tcp
+* sudo ufw allow 22/tcp
+6) После запускаем сайт по IP адресу виртуальной машины <IP-вашей виртуальной машины>:8000
+
+
