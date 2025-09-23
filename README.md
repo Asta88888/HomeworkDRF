@@ -69,4 +69,4 @@ docker-compose run --rm backend celery -A core beat -l info
 * sudo ufw allow 80/tcp
 * sudo ufw allow 443/tcp
 * sudo ufw allow 22/tcp
-6) После запускаем сайт по IP адресу виртуальной машины <IP-вашей виртуальной машины>:80
+6) После запускаем сайт по IP адресу виртуальной машины 158.160.197.44:80
