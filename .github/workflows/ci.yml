@@ -61,7 +61,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-backend:${{ github.sha }} ./backend   
+          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-backend:${{ github.sha }} -f Dockerfile .  
           docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-nginx:${{ github.sha }} ./nginx       
 
 
