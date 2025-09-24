@@ -1,6 +1,5 @@
 import stripe
 from config.settings import STRIPE_SECRET_KEY
-from forex_python.converter import CurrencyRates
 
 stripe.api_key = STRIPE_SECRET_KEY
 

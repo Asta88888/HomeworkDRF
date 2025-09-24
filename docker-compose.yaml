@@ -2,14 +2,19 @@ version: "3.9"
 
 services:
   backend:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     volumes:
-      - .:/app
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
     ports:
       - "8000:8000"
     env_file:
       - .env
+    environment:
+      SECRET_KEY: ${SECRET_KEY}
     depends_on:
       - db
       - redis
@@ -29,10 +34,11 @@ services:
       - "6379:6379"
 
   celery:
-    build: .
+    build: ./backend
     command: celery -A config worker -l info
     volumes:
-      - .:/app
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
     env_file:
       - .env
     depends_on:
@@ -41,16 +47,30 @@ services:
       - db
 
   celery_beat:
-    build: .
+    build: ./backend
     command: celery -A config beat -l info
     volumes:
-      - .:/app
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
     env_file:
       - .env
     depends_on:
       - backend
       - redis
       - db
+
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+    depends_on:
+      - backend
 
 volumes:
   postgres_data:

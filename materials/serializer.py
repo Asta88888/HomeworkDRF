@@ -29,10 +29,10 @@ class CourseDetailSerializer(ModelSerializer):
 
     class Meta:
         model = Course
-        fields = ['id', 'name', 'description', 'lesson_count', 'lessons', 'is_subscribed']
+        fields = ["id", "name", "description", "lesson_count", "lessons", "is_subscribed"]
 
     def get_is_subscribed(self, course):
-        user = self.context['request'].user
+        user = self.context["request"].user
         if user.is_anonymous:
             return False
         return Subscription.objects.filter(user=user, course=course).exists()

@@ -1,6 +1,13 @@
 from rest_framework.routers import SimpleRouter
-from materials.views import CourseViewSet, LessonCreateAPIView, LessonListAPIView, LessonRetrieveAPIView, \
-    LessonUpdateAPIView, LessonDestroyAPIView, SubscriptionToggleView
+from materials.views import (
+    CourseViewSet,
+    LessonCreateAPIView,
+    LessonListAPIView,
+    LessonRetrieveAPIView,
+    LessonUpdateAPIView,
+    LessonDestroyAPIView,
+    SubscriptionToggleView,
+)
 from materials.apps import MaterialsConfig
 from django.urls import path
 

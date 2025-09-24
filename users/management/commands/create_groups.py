@@ -14,7 +14,3 @@ class Command(BaseCommand):
                 self.stdout.write(self.style.SUCCESS(f"Группа '{group_name}' создана"))
             else:
                 self.stdout.write(self.style.WARNING(f"Группа '{group_name}' уже существует"))
-
-
-
-
